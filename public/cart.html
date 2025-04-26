@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    table {
+      width: 60%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Your Cart</h1>
+
+<table id="cartTable">
+  <thead>
+    <tr>
+      <th>Product ID</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Cart items will appear here -->
+  </tbody>
+</table>
+
+<button onclick="checkout()">Checkout</button>
+
+<div id="message"></div>
+
+<script>
+function loadCart() {
+  // We simulate cart data here because there is no endpoint yet to GET cart items.
+  // Ideally, your server should have a GET /cart route to fetch cart items.
+  
+  // For now, let's show a simple message
+  const tbody = document.getElementById('cartTable').getElementsByTagName('tbody')[0];
+  
+  fetch('http://localhost:3000/orders')  // Using /orders as temporary
+    .then(response => response.json())
+    .then(data => {
+      tbody.innerHTML = ""; // Clear existing
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2">Cart is empty</td></tr>';
+      } else {
+        // Show last order's items
+        const latestOrder = data[data.length - 1];
+        latestOrder.items.forEach(item => {
+          const row = `<tr>
+                        <td>${item.productId}</td>
+                        <td>${item.quantity}</td>
+                      </tr>`;
+          tbody.innerHTML += row;
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error loading cart:', error);
+    });
+}
+
+function checkout() {
+  fetch('http://localhost:3000/checkout', {
+    method: 'POST'
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Checkout failed');
+    }
+    return response.json();
+  })
+  .then(data => {
+    document.getElementById('message').innerText = 'Checkout successful! Order ID: ' + data.order.id;
+    document.getElementById('cartTable').getElementsByTagName('tbody')[0].innerHTML = '<tr><td colspan="2">Cart is empty</td></tr>';
+  })
+  .catch(error => {
+    console.error('Error during checkout:', error);
+    document.getElementById('message').innerText = 'Checkout failed.';
+    document.getElementById('message').style.color = 'red';
+  });
+}
+
+// Load cart when page loads
+window.onload = loadCart;
+</script>
+
+</body>
+</html>
