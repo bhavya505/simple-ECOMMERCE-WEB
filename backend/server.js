@@ -12,11 +12,49 @@ app.use(express.static(path.join(__dirname, '../public')));  // << Correct
 
 // Products
 const products = [
-  { id: 1, name: 'Laptop', price: 1000 },
-  { id: 2, name: 'Phone', price: 500 }
+  {
+  "id": 1,
+  "name": "Samsung Galaxy S23",
+  "price": 69999,
+  "category": "Mobiles",
+  "image": "https://example.com/s23.jpg",
+  "description": "128GB, Phantom Black, 50MP Camera"
+},
+  {
+  "id": 2,
+  "name": "Men's Denim Jacket",
+  "price": 1999,
+  "category": "Clothing",
+  "image": "https://example.com/jacket.jpg",
+  "description": "Stylish Blue Denim Jacket for Men"
+},
+  {
+  "id": 3,
+  "name": "LG 260L Refrigerator",
+  "price": 24999,
+  "category": "Appliances",
+  "image": "https://example.com/fridge.jpg",
+  "description": "Smart Inverter, Double Door"
+},
+  {
+  "id": 4,
+  "name": "Atomic Habits by James Clear",
+  "price": 499,
+  "category": "Books",
+  "image": "https://example.com/atomic-habits.jpg
+  "description": "Build good habits and break bad ones"
+},
+{
+  "id": 5,
+  "name": "LEGO Classic Bricks",
+  "price": 1499,
+  "category": "Toys",
+  "image": "https://example.com/lego.jpg",
+  "description": "500 pieces of colorful building blocks"
+} 
 ];
 
-// Temporary storage
+// Temporary storage{
 let cart = [];
 let orders = [];
 
